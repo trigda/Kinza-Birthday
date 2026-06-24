@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Happy Birthday Kinza! 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #1a0533;
+    color: white;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .page {
+    display: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 1rem;
+    position: relative;
+  }
+  .page.active { display: flex; }
+  #page1 { background: linear-gradient(135deg,#1a0533 0%,#2d0a4e 50%,#0d1b4e 100%); }
+  #page2 { background: linear-gradient(135deg,#0a2d0a 0%,#1a4d1a 50%,#0a1a3e 100%); }
+  #page3 { background: linear-gradient(135deg,#4d0a1a 0%,#2d0533 50%,#1a0a4d 100%); }
+
+  .star {
+    position: fixed; border-radius: 50%; background: white;
+    animation: twinkle 3s infinite alternate; pointer-events: none; z-index: 1;
+  }
+  @keyframes twinkle { 0%{opacity:.2;transform:scale(1)} 100%{opacity:1;transform:scale(1.4)} }
+
+  .balloon {
+    position: fixed;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: floatUp linear infinite;
+    opacity: 0.65; pointer-events: none; z-index: 1;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.65; }
+    90%  { opacity: 0.65; }
+    100% { transform: translateY(-180px) rotate(15deg); opacity: 0; }
+  }
+
+  .conf {
+    position: fixed; width: 7px; height: 7px; top: -10px;
+    animation: confFall linear infinite; pointer-events: none; z-index: 1;
+  }
+  @keyframes confFall {
+    0%   { top: -10px; transform: rotate(0deg); opacity: 1; }
+    100% { top: 110vh; transform: rotate(720deg); opacity: 0; }
+  }
+
+  .card {
+    position: relative; z-index: 10;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 22px;
+    padding: 1.8rem 1.3rem;
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: cardIn .7s ease-out;
+  }
+  @keyframes cardIn {
+    from { opacity:0; transform:translateY(28px) scale(.95); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  .cake-emoji {
+    font-size: clamp(3rem, 13vw, 5rem);
+    display: block;
+    animation: bounce 1.5s ease infinite alternate;
+    margin-bottom: .2rem;
+  }
+  @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-10px)} }
+
+  .title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.6rem, 7vw, 3rem);
+    background: linear-gradient(90deg,#ff9de2,#ffb347,#ff9de2);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    line-height: 1.2; margin-bottom: .2rem;
+  }
+  @keyframes shimmer { to{background-position:200% center} }
+
+  .subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 8vw, 3.6rem);
+    color: #ffe066;
+    text-shadow: 0 0 28px rgba(255,224,102,.6);
+    margin-bottom: 1rem;
+    animation: glow 2s ease infinite alternate;
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 18px rgba(255,224,102,.4); }
+    to   { text-shadow: 0 0 46px rgba(255,224,102,.9), 0 0 70px rgba(255,180,0,.4); }
+  }
+
+  .hearts {
+    font-size: clamp(1.1rem,4vw,1.4rem);
+    letter-spacing: 5px; margin-bottom: 1rem;
+    animation: hb 1s ease infinite;
+  }
+  @keyframes hb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+
+  .msg {
+    font-size: clamp(.82rem, 3.5vw, .96rem);
+    line-height: 1.8;
+    color: rgba(255,255,255,.85);
+    font-weight: 300; margin-bottom: 1rem;
+  }
+
+  .divider {
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+    margin: .9rem auto;
+  }
+
+  .page-dots { display:flex; gap:8px; justify-content:center; margin-bottom:.9rem; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    transition: all .3s; cursor: pointer;
+  }
+  .dot.active { background:#ffe066; transform:scale(1.35); }
+
+  .nav-row { display:flex; gap:10px; justify-content:center; margin-top:1rem; flex-wrap:wrap; }
+
+  .btn {
+    background: linear-gradient(135deg,#ff6b9d,#c44dff);
+    color: white; border: none;
+    padding: .65rem 1.5rem;
+    border-radius: 50px;
+    font-size: clamp(.78rem,3.5vw,.9rem);
+    font-family: 'Poppins', sans-serif; font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 18px rgba(196,77,255,.5);
+    transition: transform .2s, box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .btn:hover  { transform:scale(1.06); box-shadow:0 9px 26px rgba(196,77,255,.7); }
+  .btn:active { transform:scale(.96); }
+  .btn.green  { background:linear-gradient(135deg,#56ab2f,#a8e063); box-shadow:0 5px 18px rgba(86,171,47,.5); }
+  .btn.red    { background:linear-gradient(135deg,#ff416c,#ff4b2b); box-shadow:0 5px 18px rgba(255,65,108,.5); }
+  .btn.ghost  { background:rgba(255,255,255,.13); box-shadow:none; }
+  .btn.firework-btn {
+    background: linear-gradient(135deg,#ff6b00,#ff0080,#7b00ff);
+    box-shadow: 0 5px 22px rgba(255,100,0,.6);
+    font-size: clamp(.85rem,4vw,1rem);
+    padding: .75rem 2rem;
+    animation: fireBtnPulse 2s ease infinite alternate;
+  }
+  @keyframes fireBtnPulse {
+    from { box-shadow: 0 5px 22px rgba(255,100,0,.5); }
+    to   { box-shadow: 0 8px 35px rgba(255,0,128,.8), 0 0 20px rgba(123,0,255,.5); }
+  }
+
+  /* PAGE 1 QUIZ */
+  .quiz-box {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 14px;
+    padding: .9rem; margin-bottom: .8rem; text-align: left;
+  }
+  .quiz-q { font-size: clamp(.82rem,3.6vw,.95rem); margin-bottom:.7rem; color:rgba(255,255,255,.95); font-weight:500; }
+  .opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .opt {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    padding: .55rem .45rem;
+    font-size: clamp(.7rem,3vw,.8rem);
+    cursor: pointer; transition: all .25s;
+    text-align: center; color: white;
+    font-family: 'Poppins', sans-serif;
+    touch-action: manipulation;
+    line-height: 1.35;
+  }
+  .opt:hover   { background:rgba(255,255,255,.18); transform:scale(1.03); }
+  .opt.correct { background:rgba(86,212,100,.3); border-color:#56d464; }
+  .opt.wrong   { background:rgba(255,70,70,.3);   border-color:#ff4646; }
+
+  /* WRONG POPUP */
+  .wrong-popup {
+    display: none;
+    background: rgba(255,60,60,.15);
+    border: 1px solid rgba(255,100,100,.3);
+    border-radius: 14px;
+    padding: .9rem 1rem;
+    margin-top: .8rem;
+    text-align: center;
+    animation: slideIn .4s ease;
+  }
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .wrong-popup p { font-size: clamp(.75rem,3.2vw,.87rem); color:rgba(255,220,220,.9); margin-bottom:.6rem; }
+  .see-answer-btn {
+    background: linear-gradient(135deg,#ff416c,#ff9a3c);
+    color: white; border: none;
+    padding: .5rem 1.2rem;
+    border-radius: 30px;
+    font-size: clamp(.72rem,3vw,.82rem);
+    font-family: 'Poppins', sans-serif; font-weight: 600;
+    cursor: pointer; touch-action: manipulation;
+    box-shadow: 0 4px 14px rgba(255,65,108,.5);
+  }
+
+  /* PAGE 2 WISHES */
+  .wish-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 1rem;
+  }
+  .wish-card {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 13px; padding: .8rem .6rem;
+    transition: transform .3s, background .3s;
+  }
+  .wish-card:active { transform:translateY(-3px); background:rgba(255,255,255,.14); }
+  .wi { font-size: clamp(1.3rem,5vw,1.7rem); margin-bottom:.3rem; }
+  .wt { font-size: clamp(.68rem,2.8vw,.79rem); color:rgba(255,255,255,.85); line-height:1.45; }
+
+  /* SECRET POPUP */
+  .secret-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 400;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .secret-overlay.show { display: flex; }
+  .secret-box {
+    background: linear-gradient(135deg,rgba(30,0,60,.97),rgba(0,30,60,.97));
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 20px;
+    padding: 1.8rem 1.4rem;
+    max-width: 340px; width: 100%;
+    text-align: center;
+    animation: popIn .4s ease;
+  }
+  @keyframes popIn {
+    from { transform:scale(.7); opacity:0; }
+    to   { transform:scale(1);  opacity:1; }
+  }
+  .secret-icon { font-size: clamp(2rem,8vw,2.8rem); margin-bottom: .5rem; }
+  .secret-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.3rem,5.5vw,1.7rem);
+    color: #ffe066; margin-bottom: .5rem;
+  }
+  .secret-text { font-size: clamp(.78rem,3.2vw,.9rem); color:rgba(255,255,255,.88); line-height:1.7; margin-bottom:1rem; }
+  .secret-close {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    color: white; padding: .5rem 1.4rem;
+    border-radius: 30px; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-size: .85rem;
+    touch-action: manipulation;
+  }
+
+  /* PAGE 3 */
+  .kinza-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.2rem,10vw,4rem);
+    color: #ffe066;
+    text-shadow: 0 0 30px rgba(255,224,102,.7);
+    animation: glow 2s ease infinite alternate;
+    margin-bottom: .3rem;
+    line-height: 1.2;
+  }
+  .dua-box {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 16px;
+    padding: 1.1rem 1.2rem;
+    text-align: left;
+    font-size: clamp(.75rem,3.1vw,.87rem);
+    line-height: 1.9;
+    color: rgba(255,255,255,.88);
+    margin-bottom: 1rem;
+  }
+
+  /* FIREWORK CANVAS */
+  #fw-canvas {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 600;
+    pointer-events: none;
+  }
+  #fw-canvas.show { display: block; }
+  #fw-close {
+    display: none;
+    position: fixed; top: 1rem; right: 1rem;
+    z-index: 700;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.4);
+    color: white; padding: .5rem 1.2rem;
+    border-radius: 30px; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-size: .85rem;
+    touch-action: manipulation;
+  }
+  #fw-close.show { display: block; }
+
+  /* GENERAL POPUP */
+  .popup {
+    display: none;
+    position: fixed; top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    background: rgba(20,0,40,.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 20px; padding: 1.8rem 1.5rem;
+    z-index: 500; text-align: center;
+    animation: popIn .4s ease;
+    width: min(88vw, 300px);
+  }
+  .pop-emoji { font-size: clamp(2rem,8vw,3rem); }
+  .pop-text  {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.2rem,5vw,1.5rem);
+    color: #ffe066; margin:.4rem 0;
+  }
+  .pop-sub { font-size: clamp(.72rem,3vw,.82rem); color:rgba(255,255,255,.75); margin-top:.2rem; }
+  .pop-close {
+    margin-top: .9rem;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.28);
+    color: white; padding:.45rem 1.3rem;
+    border-radius: 30px; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-size: .85rem;
+    touch-action: manipulation;
+  }
+</style>
+</head>
+<body>
+
+<div id="stars-wrap"></div>
+<div id="balloons-wrap"></div>
+<div id="conf-wrap"></div>
+
+<!-- General popup -->
+<div class="popup" id="popup">
+  <div class="pop-emoji" id="pop-emoji">🎉</div>
+  <div class="pop-text"  id="pop-text">Surprise!</div>
+  <p   class="pop-sub"   id="pop-sub"></p>
+  <button class="pop-close" onclick="closePopup()">Theek hai 💕</button>
+</div>
+
+<!-- Secret popup overlay -->
+<div class="secret-overlay" id="secretOverlay">
+  <div class="secret-box">
+    <div class="secret-icon">🤫</div>
+    <div class="secret-title">Psst... Ek Secret!</div>
+    <div class="secret-text">
+      Allah pak tumhe shoes dainy ki tofeeq dy 👟<br>
+      aur kisi ki birthday py gift dainy ki tofeeq dy! 🎁<br><br>
+      Ab fata fat apni birthday ki treat do... 🍽️<br>
+      ya treat ke paisy hi send karo! 💸😂
+    </div>
+    <button class="secret-close" onclick="closeSecret()">Haha okay! 😂</button>
+  </div>
+</div>
+
+<!-- Firework canvas -->
+<canvas id="fw-canvas"></canvas>
+<button id="fw-close" onclick="stopFireworks()">✕ Band Karo</button>
+
+<!-- ══════════ PAGE 1 ══════════ -->
+<div class="page active" id="page1">
+  <div class="card">
+
+    <div class="page-dots">
+      <div class="dot active" onclick="goPage(1)"></div>
+      <div class="dot"        onclick="goPage(2)"></div>
+      <div class="dot"        onclick="goPage(3)"></div>
+    </div>
+
+    <span class="cake-emoji">🎂</span>
+    <div class="title">Happy Birthday</div>
+    <div class="subtitle">My Best Friend! 🌟</div>
+    <div class="hearts">💗 💕 💗 💕 💗</div>
+
+    <div class="quiz-box">
+      <div class="quiz-q">Tumhara birthday kio khaas hai?</div>
+      <div class="opts">
+        <button class="opt" onclick="answer(this,false)">Kio ky tumy gift milna 🎁</button>
+        <button class="opt" onclick="answer(this,true)">Kio ky tum ai is dunya ma ✨</button>
+        <button class="opt" onclick="answer(this,false)">Kio ky tum ollo ho 🦉😂</button>
+        <button class="opt" onclick="answer(this,false)">Honestly ni pata 🤷</button>
+      </div>
+    </div>
+
+    <div class="wrong-popup" id="wrongPopup">
+      <p>Sheikh Sahiba! Jawab sai dekhny ke liye neeche button pr click kro 👇</p>
+      <button class="see-answer-btn" onclick="revealAnswer()">Sahi Jawab Dikhaو ✅</button>
+    </div>
+
+    <div id="correct-msg" style="display:none;margin-top:.6rem;font-size:clamp(.78rem,3.2vw,.9rem);font-weight:600;color:#56d464;">
+      ✅ Bilkul sahi! Tum is duniya ka sab se khoobsurat tohfa ho! 🎁
+    </div>
+
+    <div class="divider"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goPage(2)">Aage Jao! →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 2 ══════════ -->
+<div class="page" id="page2">
+  <div class="card">
+
+    <div class="page-dots">
+      <div class="dot"        onclick="goPage(1)"></div>
+      <div class="dot active" onclick="goPage(2)"></div>
+      <div class="dot"        onclick="goPage(3)"></div>
+    </div>
+
+    <span class="cake-emoji" style="font-size:clamp(2.5rem,11vw,4rem);">🌺</span>
+    <div class="title" style="margin-top:.2rem;">Meri Duaen</div>
+    <div class="subtitle" style="font-size:clamp(1.5rem,6vw,2.6rem);">Tumhare Liye 💚</div>
+
+    <div class="wish-grid">
+      <div class="wish-card"><div class="wi">🤲</div><div class="wt">Allah tumhary naseeb achy kry aur har qadam mein barkat dy</div></div>
+      <div class="wish-card"><div class="wi">🌟</div><div class="wt">Allah tumhary naseeb achy kry aur sapne sach karay</div></div>
+      <div class="wish-card"><div class="wi">💚</div><div class="wt">Allah tumhary naseeb achy kry aur sehat dy hamesha</div></div>
+      <div class="wish-card"><div class="wi">🌸</div><div class="wt">Allah tumhary naseeb achy kry aur khushiyan hi khushiyan ho</div></div>
+      <div class="wish-card"><div class="wi">✨</div><div class="wt">Allah tumhary naseeb achy kry aur har dua qabool ho</div></div>
+      <div class="wish-card"><div class="wi">🕌</div><div class="wt">Allah tumhary naseeb achy kry aur duniya aakhirat dono mein</div></div>
+    </div>
+
+    <button class="btn green" onclick="openSecret()" style="margin-bottom:.5rem;">Ek Secret Hai... 🤫</button>
+
+    <div class="divider"></div>
+    <div class="nav-row">
+      <button class="btn ghost" onclick="goPage(1)">← Wapas</button>
+      <button class="btn"       onclick="goPage(3)">Aage →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 3 ══════════ -->
+<div class="page" id="page3">
+  <div class="card">
+
+    <div class="page-dots">
+      <div class="dot"        onclick="goPage(1)"></div>
+      <div class="dot"        onclick="goPage(2)"></div>
+      <div class="dot active" onclick="goPage(3)"></div>
+    </div>
+
+    <span class="cake-emoji" style="font-size:clamp(2.5rem,11vw,4rem);">🎂</span>
+    <div class="kinza-title">Happy Birthday Kinza! 🎉</div>
+    <div class="hearts" style="margin-bottom:.9rem;">💗 💕 💗 💕 💗</div>
+
+    <div class="dua-box">
+      Happy Birthday! May Allah bless you with a bright and beautiful future. May all your wishes come true, and may you be given countless opportunities to grow and succeed in life. May every step you take lead you toward success, and may you never face hardships. Wherever you are, may you always remain happy and surrounded by peace.<br><br>
+      May Allah grant you good health, endless happiness, and abundant blessings. May this new year of your life bring joy, success, and wonderful memories that last forever. ✨🎂🎈
+    </div>
+
+    <div class="nav-row" style="flex-direction:column;align-items:center;gap:10px;">
+      <button class="btn firework-btn" onclick="startFireworks()">🎆 Atash Bazi Chalaao!</button>
+      <button class="btn ghost" onclick="goPage(2)">← Wapas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---- BACKGROUND ---- */
+const bc=['#ff6b9d','#c44dff','#ffb347','#56d4ff','#ff6b6b','#a8ff78','#ffe066'];
+
+const sw=document.getElementById('stars-wrap');
+for(let i=0;i<55;i++){
+  const s=document.createElement('div'); s.className='star';
+  const sz=Math.random()*2.5+.8;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s;`;
+  sw.appendChild(s);
+}
+
+const bw=document.getElementById('balloons-wrap');
+for(let i=0;i<10;i++){
+  const b=document.createElement('div'); b.className='balloon';
+  const sz=24+Math.random()*26;
+  b.style.cssText=`width:${sz}px;height:${sz*1.2}px;background:${bc[i%bc.length]};left:${Math.random()*94}%;animation-delay:${Math.random()*12}s;animation-duration:${8+Math.random()*9}s;`;
+  bw.appendChild(b);
+}
+
+const cw=document.getElementById('conf-wrap');
+for(let i=0;i<28;i++){
+  const c=document.createElement('div'); c.className='conf';
+  c.style.cssText=`left:${Math.random()*100}%;background:${bc[i%bc.length]};border-radius:${Math.random()>.5?'50%':'2px'};animation-delay:${Math.random()*10}s;animation-duration:${5+Math.random()*9}s;`;
+  cw.appendChild(c);
+}
+
+/* ---- PAGE NAV ---- */
+function goPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---- QUIZ ---- */
+let answered=false;
+function answer(el,correct){
+  if(answered)return;
+  answered=true;
+  document.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; o.style.cursor='default'; });
+  if(correct){
+    el.classList.add('correct');
+    document.getElementById('correct-msg').style.display='block';
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('wrongPopup').style.display='block';
+  }
+}
+
+function revealAnswer(){
+  document.querySelectorAll('.opt').forEach(o=>{
+    if(o.getAttribute('onclick') && o.getAttribute('onclick').includes('true')){
+      o.classList.add('correct');
+    }
+  });
+  document.getElementById('wrongPopup').style.display='none';
+  document.getElementById('correct-msg').style.display='block';
+  document.getElementById('correct-msg').textContent='✅ Yeh tha sahi jawab! Tum is duniya ka sab se khoobsurat tohfa ho! 🎁';
+}
+
+/* ---- SECRET ---- */
+function openSecret(){ document.getElementById('secretOverlay').classList.add('show'); }
+function closeSecret(){ document.getElementById('secretOverlay').classList.remove('show'); }
+
+/* ---- GENERAL POPUP ---- */
+function showPopup(emoji,text,sub){
+  document.getElementById('pop-emoji').textContent=emoji;
+  document.getElementById('pop-text').textContent=text;
+  document.getElementById('pop-sub').textContent=sub;
+  document.getElementById('popup').style.display='block';
+}
+function closePopup(){ document.getElementById('popup').style.display='none'; }
+
+/* ====================================================
+   REAL FIREWORKS — Canvas based
+   ==================================================== */
+let fwRunning=false;
+let fwRaf=null;
+const canvas=document.getElementById('fw-canvas');
+const ctx=canvas.getContext('2d');
+let particles=[];
+let fwTimer=null;
+
+function startFireworks(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  canvas.classList.add('show');
+  document.getElementById('fw-close').classList.add('show');
+  fwRunning=true;
+  particles=[];
+
+  // launch a rocket every 600ms
+  fwTimer=setInterval(launchRocket,600);
+  launchRocket();
+  launchRocket();
+  renderLoop();
+
+  // auto stop after 8 seconds
+  setTimeout(stopFireworks,8000);
+}
+
+function stopFireworks(){
+  fwRunning=false;
+  clearInterval(fwTimer);
+  cancelAnimationFrame(fwRaf);
+  canvas.classList.remove('show');
+  document.getElementById('fw-close').classList.remove('show');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+window.addEventListener('resize',()=>{
+  if(fwRunning){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+});
+
+function launchRocket(){
+  const x=canvas.width*(.15+Math.random()*.7);
+  const targetY=canvas.height*(.1+Math.random()*.4);
+  const col=`hsl(${Math.random()*360},100%,65%)`;
+  // explode immediately at target with trail effect
+  explode(x,targetY,col);
+}
+
+function explode(x,y,col){
+  const count=120+Math.floor(Math.random()*60);
+  for(let i=0;i<count;i++){
+    const angle=Math.random()*Math.PI*2;
+    const speed=1.5+Math.random()*5;
+    const hue=Math.random()*60-30;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      alpha: 1,
+      decay: .012+Math.random()*.015,
+      size: 2+Math.random()*2.5,
+      col: shiftHue(col,hue),
+      trail: [],
+      gravity: .08
+    });
+  }
+  // glitter ring
+  for(let i=0;i<30;i++){
+    const angle=(i/30)*Math.PI*2;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle)*2,
+      vy: Math.sin(angle)*2,
+      alpha: 1,
+      decay: .02,
+      size: 1.5,
+      col: '#fff',
+      trail: [],
+      gravity: .04
+    });
+  }
+}
+
+function shiftHue(hslStr,delta){
+  const m=hslStr.match(/hsl\((\d+),/);
+  if(!m) return hslStr;
+  const h=(parseInt(m[1])+delta+360)%360;
+  return hslStr.replace(/hsl\(\d+,/,`hsl(${h},`);
+}
+
+function renderLoop(){
+  if(!fwRunning) return;
+  ctx.fillStyle='rgba(0,0,0,0.18)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];
+    p.x+=p.vx; p.y+=p.vy;
+    p.vy+=p.gravity;
+    p.vx*=.97; p.vy*=.97;
+    p.alpha-=p.decay;
+
+    if(p.alpha<=0){ particles.splice(i,1); continue; }
+
+    ctx.save();
+    ctx.globalAlpha=p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle=p.col;
+    ctx.shadowBlur=8;
+    ctx.shadowColor=p.col;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  fwRaf=requestAnimationFrame(renderLoop);
+}
+</script>
+</body>
+</html>
